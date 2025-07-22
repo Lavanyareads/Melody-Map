@@ -1,14 +1,25 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState } from 'react';
+import { Landing } from './Landing';
+import { TimeMachine } from './TimeMachine';
+
+type AppState = 'landing' | 'timeMachine';
 
 const Index = () => {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
-    </div>
-  );
+  const [currentState, setCurrentState] = useState<AppState>('landing');
+
+  const handleEnterPortal = () => {
+    setCurrentState('timeMachine');
+  };
+
+  const handleReturnToPortal = () => {
+    setCurrentState('landing');
+  };
+
+  if (currentState === 'landing') {
+    return <Landing onEnter={handleEnterPortal} />;
+  }
+
+  return <TimeMachine onBack={handleReturnToPortal} />;
 };
 
 export default Index;
