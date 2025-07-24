@@ -31,12 +31,12 @@ export const Landing = ({ onEnter }: LandingProps) => {
           </span>
         </h1>
         
-        <p className="font-ethereal text-xl md:text-2xl text-accent mb-8 tracking-wide">
+        <p className="font-ethereal text-xl md:text-2xl text-white mb-8 tracking-wide">
           A Journey Through Culture & Sound
         </p>
         
         <div className="mb-12">
-          <p className="font-ethereal text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+          <p className="font-ethereal text-lg text-white/90 max-w-2xl mx-auto leading-relaxed">
             Step through the cosmic veil and experience the rich tapestry of human culture 
             through the universal language of music. Every era awaits your discovery.
           </p>
