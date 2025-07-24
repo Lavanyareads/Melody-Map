@@ -10,9 +10,36 @@ interface TimeMachineProps {
 }
 
 const playlists = {
-  india: 'https://open.spotify.com/embed/playlist/0Gd0yQzB6wttuaLlawHlYI?utm_source=generator',
-  japan: 'https://open.spotify.com/embed/playlist/2Kj5NUtVetggUDHPIGC9U7?utm_source=generator',
-  england: 'https://open.spotify.com/embed/playlist/37i9dQZF1DX0XUsuxWHRQd?utm_source=generator' // Example UK playlist
+  india: {
+    '1800s': 'https://open.spotify.com/embed/playlist/0aKCZLjz5emVeZb8X9Aff2?si=cebf34c82ade47a6',
+    '1900s': 'https://open.spotify.com/embed/playlist/46Tj1EB8ypnewR7c2bnpoP?si=8b3d731c97574477',
+    '1950s': 'https://open.spotify.com/embed/playlist/0Re2XpJ5nKf92ZVLLY013U?si=7190065b01504854',
+    '1960s': 'https://open.spotify.com/embed/playlist/5fSlQnCar2lO1agev6miDy?si=1c67bfeed21240bb',
+    '1970s': 'https://open.spotify.com/embed/playlist/0Cuu33MkLpF9dxajn0Xl4A?si=35ac18a364414d73',
+    '1980s': 'https://open.spotify.com/embed/playlist/1aEHbxPXqcBLLIT7bIKtym?si=7c3430799a8445c0',
+    '1990s': 'https://open.spotify.com/embed/playlist/0URYayEmUAhVwUKzH1JgIa?si=5456d7cbfad84f58',
+    '2000s': 'https://open.spotify.com/embed/playlist/6cG0nXV464Iy0CX5R9SQEb?si=636a0441c8434679',
+    '2010s': 'https://open.spotify.com/embed/playlist/3tg7zejrVE4uHKPkmRS4mq?si=28f7d0eadee449c1',
+    '2020s': 'https://open.spotify.com/embed/playlist/3tg7zejrVE4uHKPkmRS4mq?si=28f7d0eadee449c1'
+  },
+  england: {
+    '1800s': 'https://open.spotify.com/embed/playlist/6eee07c4aVGsA5g5CLgymn?si=50a57495df054750',
+    '1900s': 'https://open.spotify.com/embed/playlist/4ug7Uqszxra8ZP2JOVlulu?si=57cc19b0b280484d',
+    '1950s': 'https://open.spotify.com/embed/playlist/0CDnS0YskzurwrILX6v6Kw?si=16bd16de98fa4f4a',
+    '1960s': 'https://open.spotify.com/embed/playlist/32Cmsda7M4o7JiCgEaoPdp?si=98cf36741c404b81',
+    '1970s': 'https://open.spotify.com/embed/playlist/3v7OwbhrSnoqgD9sjEWM2j?si=3761626ed2154d8f',
+    '1980s': 'https://open.spotify.com/embed/playlist/2c9skJFXKrrBiBYIqLj5VM?si=09ae3ad3613f4b2a',
+    '1990s': 'https://open.spotify.com/embed/playlist/5cVOBbXQ0Frx2jtu3izubl?si=f2a4740841a64f17',
+    '2000s': 'https://open.spotify.com/embed/playlist/1JpAOnSrgAnSjGEaf9wDYR?si=cad417dc116e4e4e',
+    '2010s': 'https://open.spotify.com/embed/playlist/3QYNblWaW9OHdhdyPH3tkC?si=ffbed21a9edc4a47',
+    '2020s': 'https://open.spotify.com/embed/playlist/3QYNblWaW9OHdhdyPH3tkC?si=ffbed21a9edc4a47'
+  },
+  japan: {
+    'default': 'https://open.spotify.com/embed/playlist/5zz5jcrT86vBBQSmf9eUcz?si=eb874d6fc9564b38'
+  },
+  korea: {
+    'default': 'https://open.spotify.com/embed/playlist/4UZ2wUj0r53SBX9ZAGfCSA?si=a56c'
+  }
 };
 
 export const TimeMachine = ({ onBack }: TimeMachineProps) => {
@@ -20,6 +47,16 @@ export const TimeMachine = ({ onBack }: TimeMachineProps) => {
   const [selectedCountry, setSelectedCountry] = useState<string>('');
   const [showTransition, setShowTransition] = useState(false);
   const [showPlaylist, setShowPlaylist] = useState(false);
+
+  const getPlaylistUrl = () => {
+    const countryPlaylists = playlists[selectedCountry as keyof typeof playlists];
+    if (typeof countryPlaylists === 'object') {
+      // For India and England, use year-specific playlists
+      return countryPlaylists[selectedYear as keyof typeof countryPlaylists] || Object.values(countryPlaylists)[0];
+    }
+    // For Japan and Korea, use default playlist
+    return countryPlaylists;
+  };
 
   const handleTimeTravel = () => {
     if (!selectedCountry) return;
@@ -47,7 +84,7 @@ export const TimeMachine = ({ onBack }: TimeMachineProps) => {
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-6">
               <h2 className="font-cosmic text-3xl md:text-4xl text-primary mb-2">
-                Welcome to {selectedCountry === 'india' ? 'India' : selectedCountry === 'japan' ? 'Japan' : 'England'}
+                Welcome to {selectedCountry === 'india' ? 'India' : selectedCountry === 'japan' ? 'Japan' : selectedCountry === 'korea' ? 'Korea' : 'England'}
               </h2>
               <p className="font-ethereal text-lg text-accent">
                 {selectedYear && `The ${selectedYear} • `}Experience the Musical Heritage
@@ -56,7 +93,7 @@ export const TimeMachine = ({ onBack }: TimeMachineProps) => {
             
             <div className="bg-card/20 backdrop-blur-lg rounded-2xl p-6 border border-accent/30 shadow-cosmic">
               <iframe
-                src={playlists[selectedCountry as keyof typeof playlists]}
+                src={getPlaylistUrl()}
                 width="100%"
                 height="400"
                 frameBorder="0"
@@ -170,6 +207,7 @@ export const TimeMachine = ({ onBack }: TimeMachineProps) => {
                       <SelectContent className="bg-card border-accent/30">
                         <SelectItem value="india">🇮🇳 India - Ragas & Rhythms</SelectItem>
                         <SelectItem value="japan">🇯🇵 Japan - Traditional & Modern</SelectItem>
+                        <SelectItem value="korea">🇰🇷 Korea - K-Culture Heritage</SelectItem>
                         <SelectItem value="england">🇬🇧 England - Classical & Contemporary</SelectItem>
                       </SelectContent>
                     </Select>
